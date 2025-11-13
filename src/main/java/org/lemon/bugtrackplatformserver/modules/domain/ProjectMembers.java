@@ -1,0 +1,98 @@
+package org.lemon.bugtrackplatformserver.modules.domain;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.Data;
+
+/**
+ * 项目成员表
+ * @TableName project_members
+ */
+@TableName(value ="project_members")
+@Data
+public class ProjectMembers implements Serializable {
+    /**
+     * 主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 所属项目ID
+     */
+    @TableField(value = "project_id")
+    private Long projectId;
+
+    /**
+     * 成员用户ID
+     */
+    @TableField(value = "user_id")
+    private Long userId;
+
+    /**
+     * 角色：owner/admin/member/viewer
+     */
+    @TableField(value = "role")
+    private String role;
+
+    /**
+     * 加入时间
+     */
+    @TableField(value = "joined_at")
+    private LocalDateTime joinedAt;
+
+    @Serial
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ProjectMembers other = (ProjectMembers) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getProjectId() == null ? other.getProjectId() == null : this.getProjectId().equals(other.getProjectId()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getRole() == null ? other.getRole() == null : this.getRole().equals(other.getRole()))
+            && (this.getJoinedAt() == null ? other.getJoinedAt() == null : this.getJoinedAt().equals(other.getJoinedAt()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getProjectId() == null) ? 0 : getProjectId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getRole() == null) ? 0 : getRole().hashCode());
+        result = prime * result + ((getJoinedAt() == null) ? 0 : getJoinedAt().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() +
+                " [" +
+                "Hash = " + hashCode() +
+                ", id=" + id +
+                ", projectId=" + projectId +
+                ", userId=" + userId +
+                ", role=" + role +
+                ", joinedAt=" + joinedAt +
+                ", serialVersionUID=" + serialVersionUID +
+                "]";
+    }
+}

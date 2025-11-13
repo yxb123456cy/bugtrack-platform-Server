@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lemon.bugtrackplatformserver.modules.mapper.IssueAttachmentsMapper">
+
+    <resultMap id="BaseResultMap" type="org.lemon.bugtrackplatformserver.modules.domain.IssueAttachments">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="issueId" column="issue_id" jdbcType="BIGINT"/>
+            <result property="uploaderId" column="uploader_id" jdbcType="BIGINT"/>
+            <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+            <result property="fileSize" column="file_size" jdbcType="BIGINT"/>
+            <result property="storagePath" column="storage_path" jdbcType="VARCHAR"/>
+            <result property="mimeType" column="mime_type" jdbcType="VARCHAR"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,issue_id,uploader_id,
+        file_name,file_size,storage_path,
+        mime_type,created_at
+    </sql>
+</mapper>

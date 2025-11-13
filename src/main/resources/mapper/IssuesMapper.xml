@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lemon.bugtrackplatformserver.modules.mapper.IssuesMapper">
+
+    <resultMap id="BaseResultMap" type="org.lemon.bugtrackplatformserver.modules.domain.Issues">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="projectId" column="project_id" jdbcType="BIGINT"/>
+            <result property="issueNo" column="issue_no" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="severity" column="severity" jdbcType="VARCHAR"/>
+            <result property="priority" column="priority" jdbcType="VARCHAR"/>
+            <result property="reporterId" column="reporter_id" jdbcType="BIGINT"/>
+            <result property="assigneeId" column="assignee_id" jdbcType="BIGINT"/>
+            <result property="module" column="module" jdbcType="VARCHAR"/>
+            <result property="resolution" column="resolution" jdbcType="VARCHAR"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,project_id,issue_no,
+        type,title,description,
+        status,severity,priority,
+        reporter_id,assignee_id,module,
+        resolution,created_at,updated_at
+    </sql>
+</mapper>

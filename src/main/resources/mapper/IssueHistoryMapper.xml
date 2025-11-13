@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lemon.bugtrackplatformserver.modules.mapper.IssueHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="org.lemon.bugtrackplatformserver.modules.domain.IssueHistory">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="issueId" column="issue_id" jdbcType="BIGINT"/>
+            <result property="actorId" column="actor_id" jdbcType="BIGINT"/>
+            <result property="action" column="action" jdbcType="VARCHAR"/>
+            <result property="fromValue" column="from_value" jdbcType="VARCHAR"/>
+            <result property="toValue" column="to_value" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,issue_id,actor_id,
+        action,from_value,to_value,
+        remark,created_at
+    </sql>
+</mapper>
