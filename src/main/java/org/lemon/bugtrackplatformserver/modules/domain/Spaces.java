@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 空间表（多租户/团队维度）
  * @TableName spaces
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="spaces")
 @Data
 public class Spaces implements Serializable {

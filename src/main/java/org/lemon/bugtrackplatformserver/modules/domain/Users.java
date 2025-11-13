@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户表
  * @TableName users
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="users")
 @Data
 public class Users implements Serializable {

@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-11-13 16:52:24
 */
 public interface IssuesService extends IService<Issues> {
-
+    Issues createIssue(Issues issue);
 }

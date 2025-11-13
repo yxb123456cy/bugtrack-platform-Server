@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 标签表
  * @TableName tags
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="tags")
 @Data
 public class Tags implements Serializable {

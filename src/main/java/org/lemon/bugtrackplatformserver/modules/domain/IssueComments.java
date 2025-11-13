@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 问题单评论表
  * @TableName issue_comments
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="issue_comments")
 @Data
 public class IssueComments implements Serializable {

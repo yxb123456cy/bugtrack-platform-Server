@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Token 存储表
  * @TableName auth_tokens
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="auth_tokens")
 @Data
 public class AuthTokens implements Serializable {

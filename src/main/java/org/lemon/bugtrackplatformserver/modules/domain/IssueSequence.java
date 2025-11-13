@@ -7,12 +7,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 项目问题编号序列表
  * @TableName issue_sequence
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="issue_sequence")
 @Data
 public class IssueSequence implements Serializable {

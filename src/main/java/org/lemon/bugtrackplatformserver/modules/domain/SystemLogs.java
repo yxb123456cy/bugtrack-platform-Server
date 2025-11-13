@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 系统日志表
  * @TableName system_logs
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="system_logs")
 @Data
 public class SystemLogs implements Serializable {

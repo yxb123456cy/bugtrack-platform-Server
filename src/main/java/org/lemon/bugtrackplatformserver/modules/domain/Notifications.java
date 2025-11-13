@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 系统通知表
  * @TableName notifications
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="notifications")
 @Data
 public class Notifications implements Serializable {

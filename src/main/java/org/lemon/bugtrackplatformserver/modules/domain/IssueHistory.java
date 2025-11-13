@@ -8,12 +8,19 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 问题单历史记录表
  * @TableName issue_history
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value ="issue_history")
 @Data
 public class IssueHistory implements Serializable {
