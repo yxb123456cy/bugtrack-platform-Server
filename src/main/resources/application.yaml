@@ -1,0 +1,11 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  profiles:
+    active: dev
+  application:
+    name: bugTrack-platform-Server
+
+server:
+  port: 8080

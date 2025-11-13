@@ -1,0 +1,183 @@
+spring:
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 365d
+          cache-public: true
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+        cache: true
+      static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 16
+        queue-capacity: 100
+        keep-alive: 60s
+      thread-name-prefix: lemon-async-task-
+    scheduling:
+      pool:
+        size: 4
+      thread-name-prefix: lemon-scheduling-
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=600s #缓存规则
+  servlet:
+    multipart:
+      enabled: true           # 启用文件上传支持（默认 true）
+      max-file-size: 500MB    # 单个文件最大大小
+      max-request-size: 1GB   # 单次请求（多个文件）的最大大小
+      file-size-threshold: 2MB # 当上传文件超过此大小时，写入磁盘临时目录
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bugtrack_platform
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid: # Druid 连接池
+      initial-size: 5 # 初始化连接池大小
+      min-idle: 5 # 最小连接池数量
+      max-active: 20 # 最大连接池数量
+      max-wait: 60000 # 连接时最大等待时间（单位：毫秒）
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000 # 配置多久进行一次检测，检测需要关闭的连接（单位：毫秒）
+      min-evictable-idle-time-millis: 300000 # 配置一个连接在连接池中最小生存的时间（单位：毫秒）
+      max-evictable-idle-time-millis: 900000 # 配置一个连接在连接池中最大生存的时间（单位：毫秒）
+      validation-query: SELECT 1 FROM DUAL # 配置测试连接是否可用的查询 sql
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/* # 配置监控后台访问路径
+        login-username: admin # 配置监控后台登录的用户名、密码
+        login-password: admin
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true # 开启慢 sql 记录
+          slow-sql-millis: 1000 # 若执行耗时大于 1s，则视为慢 sql
+          merge-sql: true
+        wall: # 防火墙
+          config:
+            multi-statement-allow: true
+  docker:
+    compose:
+      enabled: false
+      file: compose.yaml
+  application:
+    name: lemon-boot
+
+logging:
+  file:
+    name: logs/application.log # 日志文件名
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB  # 单个日志文件最大大小
+      max-history: 30 # 日志保留30天
+      total-size-cap: 3GB # 所有日志文件总大小上限
+
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: org.lemon.lemoncodesnippetmanagementtoolserver
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+  basic:
+    username: 123456
+    password: 123456
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics #只开放3个安全端点：health（服务健康状态）、info（项目基本信息）、metrics（服务指标，如CPU使用率）；
+  endpoint:
+    health:
+      show-details: when_authorized # 健康详情只给授权用户看
+
+server:
+  tomcat:
+    max-connections: 10000 # 最大连接数 默认:8192
+    threads:
+      max: 800  # 最大工作线程数 默认:200
+      min-spare: 100 # 最大工作线程数 默认:200
+    accept-count: 120 # 等待队列长度 默认:100
+    connection-timeout: 20000 # 连接超时时间（毫秒），默认未配置
+  port: 8088
+
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token 名称
+  token-name: token
+  # token 有效期（单位：秒） 设置为7200S-即两小时;
+  timeout: 7200
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: false
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+  is-read-body: false #是否尝试从 请求体 里读取 Token 这里设置为false;
+  is-read-cookie: false #是否尝试从 cookie 里读取 Token 这里设置为false;
+  token-prefix: Bearer # 表示token前缀 例:toekn: Bearer eyj2666666666666666660---------
+  is-color-log: true # 打印彩色日志;
+  jwt-secret-key: qy-lemon-boot #jwt秘钥 （只有集成 sa-token-temp-jwt 模块时此参数才会生效）
+
+dromara:
+  x-file-storage: #文件存储配置
+    default-platform: aliyun-oss-1 #默认使用的存储平台
+    thumbnail-suffix: ".min.jpg" #缩略图后缀，例如【.min.jpg】【.png】
+    #对应平台的配置写在这里，注意缩进要对齐
+    aliyun-oss:
+      - platform: aliyun-oss-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: your-access-key
+        secret-key: your-secret-key
+        end-point: oss-cn-hangzhou.aliyuncs.com
+        bucket-name: your-bucket-name
+        domain: domain
+        base-path: resources/ # 基础路径
+    tencent-cos:
+      - platform: tencent-cos-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        secret-id: your-secret-id
+        secret-key: your-secret-key
+        region: ap-guangzhou
+        bucket-name: your-bucket-name
+        domain: domain
+        base-path: resources/ # 基础路径
