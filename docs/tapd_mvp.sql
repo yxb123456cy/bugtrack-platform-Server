@@ -310,3 +310,78 @@ VALUES ('owner', '项目拥有者'),
        ('admin', '项目管理员'),
        ('member', '项目成员'),
        ('viewer', '只读成员');
+-- ================================================================
+-- 0. 新增：空间表（团队/组织级容器）
+-- ================================================================
+CREATE TABLE IF NOT EXISTS `spaces`
+(
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '空间ID',
+    `name`        VARCHAR(128)    NOT NULL COMMENT '空间名称',
+    `key`         VARCHAR(32)     NOT NULL COMMENT '空间唯一标识，如 TEAM_A',
+    `owner_id`    BIGINT UNSIGNED NOT NULL COMMENT '空间创建者ID',
+    `description` TEXT COMMENT '空间描述',
+    `visibility`  TINYINT         NOT NULL DEFAULT 1 COMMENT '可见性：0私有，1团队可见，2公开',
+    `status`      TINYINT         NOT NULL DEFAULT 1 COMMENT '状态：0禁用，1启用',
+    `created_at`  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `ux_spaces_key` (`key`),
+    KEY `idx_spaces_owner` (`owner_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci COMMENT ='空间表（多租户/团队维度）';
+
+
+-- ================================================================
+-- 0.1 空间成员表（成员与角色）
+-- ================================================================
+CREATE TABLE IF NOT EXISTS `space_members`
+(
+    `id`        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `space_id`  BIGINT UNSIGNED NOT NULL COMMENT '空间ID',
+    `user_id`   BIGINT UNSIGNED NOT NULL COMMENT '用户ID',
+    `role`      VARCHAR(32)     NOT NULL DEFAULT 'member' COMMENT '角色：owner/admin/member/viewer',
+    `joined_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `ux_space_members_space_user` (`space_id`, `user_id`),
+    KEY `idx_space_members_user` (`user_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci COMMENT ='空间成员表';
+
+
+-- ================================================================
+-- 2. 更新：项目表（添加 space_id 维度）
+-- ================================================================
+ALTER TABLE `projects`
+    ADD COLUMN `space_id` BIGINT UNSIGNED DEFAULT NULL COMMENT '所属空间ID' AFTER `id`,
+    ADD KEY `idx_projects_space` (`space_id`);
+
+
+-- ================================================================
+-- 2.1 新表：项目模板表（可选，用于创建默认配置）
+-- ================================================================
+CREATE TABLE IF NOT EXISTS `project_templates`
+(
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '模板ID',
+    `space_id`    BIGINT UNSIGNED          DEFAULT NULL COMMENT '所属空间ID',
+    `name`        VARCHAR(128)    NOT NULL COMMENT '模板名称',
+    `description` TEXT COMMENT '模板描述',
+    `is_default`  TINYINT         NOT NULL DEFAULT 0 COMMENT '是否为默认模板',
+    `config_json` JSON COMMENT '默认配置内容（如状态流、字段模板）',
+    `created_at`  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `ux_proj_templates_name` (`space_id`, `name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci COMMENT ='项目模板表';
+
+
+-- ================================================================
+-- 更新：系统日志表扩展 (记录空间与项目维度)
+-- ================================================================
+ALTER TABLE `system_logs`
+    ADD COLUMN `space_id`   BIGINT UNSIGNED DEFAULT NULL COMMENT '空间ID',
+    ADD COLUMN `project_id` BIGINT UNSIGNED DEFAULT NULL COMMENT '项目ID',
+    ADD KEY `idx_system_logs_space` (`space_id`),
+    ADD KEY `idx_system_logs_project` (`project_id`);
